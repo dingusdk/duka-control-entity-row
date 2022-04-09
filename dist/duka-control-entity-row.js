@@ -1,8 +1,8 @@
 
 class DukaCustomFanRow extends Polymer.Element {
 
-	static get template() {
-        return Polymer.html`
+  static get template() {
+    return Polymer.html`
             <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
             <style>
                 :host { line-height: inherit;}
@@ -97,118 +97,118 @@ class DukaCustomFanRow extends Polymer.Element {
 								</div>
              </hui-generic-entity-row>
         `;
+  }
+
+  static get properties() {
+    return {
+      hass: {
+        type: Object,
+        observer: 'hassChanged'
+      },
+      _config: Object,
+      _stateObj: Object,
+      _lowOnColor: String,
+      _medOnColor: String,
+      _highOnColor: String,
+      _offColor: String,
+      _modeInColor: String,
+      _modeInOutColor: String,
+      _modeOutColor: String,
+      _isOffState: Boolean,
+      _isOnState: Boolean,
+      _isOnLow: Boolean,
+      _isOnMed: Boolean,
+      _isOnHigh: Boolean,
     }
+  }
 
-    static get properties() {
-        return {
-            hass: {
-                type: Object,
-                observer: 'hassChanged'
-            },
-						_config: Object,
-						_stateObj: Object,
-						_lowOnColor: String,
-						_medOnColor: String,
-						_highOnColor: String,
-						_offColor: String,
-						_modeInColor: String,
-						_modeInOutColor: String,
-						_modeOutColor: String,
-						_isOffState: Boolean,
-						_isOnState: Boolean,
-						_isOnLow: Boolean,
-						_isOnMed: Boolean,
-						_isOnHigh: Boolean,
-				}
-		}
+  setConfig(config) {
+    this._config = config;
+    this._config = {
+      customTheme: false,
+      customIsOffColor: '#f44c09',
+      customIsOnLowColor: '#43A047',
+      customIsOnMedColor: '#43A047',
+      customIsOnHiColor: '#43A047',
+      customIsOffSpdColor: '#759aaa',
+      customIsModeOnColor: '#43A047',
+      ...config
+    };
+  }
 
-	    setConfig(config) {
-        this._config = config;
-				this._config = {
-            customTheme: false,
-            customIsOffColor: '#f44c09',
-            customIsOnLowColor: '#43A047',
-            customIsOnMedColor: '#43A047',
-            customIsOnHiColor: '#43A047',
-            customIsOffSpdColor: '#759aaa',
-			customIsModeOnColor: '#43A047',
-            ...config
-        };
+  hassChanged(hass) {
+    const config = this._config;
+    const stateObj = hass.states[config.entity];
+
+    let speed;
+    let mode;
+    let modeincolor;
+    let modeinoutcolor;
+    let modeoutcolor;
+
+    let lowcolor;
+    let medcolor;
+    let hicolor;
+    let offcolor;
+
+    if (stateObj && stateObj.attributes) {
+      speed = stateObj.attributes.preset_mode || 'off';
+      console.log("speed: " + speed);
+      mode = stateObj.attributes.mode || 'inout';
+      if (config.customTheme) {
+        modeincolor = 'background-color:' + (mode == 'in' ? config.customIsModeOnColor : config.customIsOffSpdColor);
+        modeinoutcolor = 'background-color:' + (mode == 'inout' ? config.customIsModeOnColor : config.customIsOffSpdColor);
+        modeoutcolor = 'background-color:' + (mode == 'out' ? config.customIsModeOnColor : config.customIsOffSpdColor);
+
+        lowcolor = 'background-color:' + (speed == 'low' ? config.customIsOnLowColor : config.customIsOffSpdColor);
+        medcolor = 'background-color:' + (speed == 'medium' ? config.customIsOnMedColor : config.customIsOffSpdColor);
+        hicolor = 'background-color:' + (speed == 'high' ? config.customIsOnHiColor : config.customIsOffSpdColor);
+        offcolor = 'background-color:' + (speed == 'off' ? config.customIsOffColor : config.customIsOffSpdColor);
+      }
+      else {
+        modeincolor = 'background-color:' + (mode == 'in' ? 'var(--primary-color)' : 'var(--disabled-text-color)');
+        modeinoutcolor = 'background-color:' + (mode == 'inout' ? 'var(--primary-color)' : 'var(--disabled-text-color)');
+        modeoutcolor = 'background-color:' + (mode == 'out' ? 'var(--primary-color)' : 'var(--disabled-text-color)');
+
+        lowcolor = 'background-color:' + (speed == 'low' ? 'var(--primary-color)' : 'var(--disabled-text-color)');
+        medcolor = 'background-color:' + (speed == 'medium' ? 'var(--primary-color)' : 'var(--disabled-text-color)');
+        hicolor = 'background-color:' + (speed == 'high' ? 'var(--primary-color)' : 'var(--disabled-text-color)');
+        offcolor = 'background-color:' + (speed == 'off' ? 'var(--primary-color)' : 'var(--disabled-text-color)');
+      }
     }
+    this.setProperties({
+      _stateObj: stateObj,
+      _isOffState: stateObj.state ? stateObj.state == 'off' : true,
+      _isOnLow: speed === 'low',
+      _isOnMed: speed === 'medium',
+      _isOnHigh: speed === 'high',
+      _lowOnColor: lowcolor,
+      _medOnColor: medcolor,
+      _highOnColor: hicolor,
+      _offColor: offcolor,
+      _modeInColor: modeincolor,
+      _modeInOutColor: modeinoutcolor,
+      _modeOutColor: modeoutcolor,
+    });
+  }
 
-    hassChanged(hass) {
-			const config = this._config;
-			const stateObj = hass.states[config.entity];
+  stopPropagation(e) {
+    e.stopPropagation();
+  }
 
-			let speed;
-			let mode;
-			let modeincolor;
-			let modeinoutcolor;
-			let modeoutcolor;
-
-			let lowcolor;
-			let medcolor;
-			let hicolor;
-			let offcolor;
-
-			if (stateObj && stateObj.attributes) {
-				speed = stateObj.attributes.speed || 'off';
-				console.log("speed: " + speed);
-				mode  = stateObj.attributes.mode || 'inout';
-				if (config.customTheme) {
-					modeincolor = 'background-color:' + (mode == 'in' ? config.customIsModeOnColor : config.customIsOffSpdColor);
-					modeinoutcolor = 'background-color:' + (mode == 'inout' ? config.customIsModeOnColor : config.customIsOffSpdColor);
-					modeoutcolor = 'background-color:' + (mode == 'out' ? config.customIsModeOnColor : config.customIsOffSpdColor);
-
-					lowcolor = 'background-color:' + (speed == 'low' ? config.customIsOnLowColor : config.customIsOffSpdColor);
-					medcolor = 'background-color:' + (speed == 'medium' ? config.customIsOnMedColor : config.customIsOffSpdColor);
-					hicolor = 'background-color:' + (speed == 'high' ? config.customIsOnHiColor : config.customIsOffSpdColor);
-					offcolor = 'background-color:' + (speed == 'off' ? config.customIsOffColor : config.customIsOffSpdColor);
-				}
-				else {
-					modeincolor = 'background-color:' + (mode == 'in' ? 'var(--primary-color)' : 'var(--disabled-text-color)');
-					modeinoutcolor = 'background-color:' + (mode == 'inout' ? 'var(--primary-color)' : 'var(--disabled-text-color)');
-					modeoutcolor = 'background-color:' + (mode == 'out' ? 'var(--primary-color)' : 'var(--disabled-text-color)');
-
-					lowcolor = 'background-color:' + (speed == 'low' ? 'var(--primary-color)' : 'var(--disabled-text-color)');
-					medcolor = 'background-color:' + (speed == 'medium' ? 'var(--primary-color)' : 'var(--disabled-text-color)');
-					hicolor = 'background-color:' + (speed == 'high' ? 'var(--primary-color)' : 'var(--disabled-text-color)');
-					offcolor = 'background-color:' + (speed == 'off' ? 'var(--primary-color)' : 'var(--disabled-text-color)');
-				}
-			}
-			this.setProperties({
-        _stateObj: stateObj,
-        _isOffState: stateObj.state ? stateObj.state == 'off' : true,
-        _isOnLow: speed === 'low',
-        _isOnMed: speed === 'medium',
-        _isOnHigh: speed === 'high',
-        _lowOnColor: lowcolor,
-        _medOnColor: medcolor,
-        _highOnColor: hicolor,
-        _offColor: offcolor,
-				_modeInColor: modeincolor,
-				_modeInOutColor: modeinoutcolor,
-				_modeOutColor: modeoutcolor,
-			});
+  setSpeed(e) {
+    const speed = e.currentTarget.getAttribute('name');
+    if (speed == 'off') {
+      this.hass.callService('fan', 'turn_off', { entity_id: this._config.entity });
+    } else {
+      this.hass.callService('fan', 'set_preset_mode', { entity_id: this._config.entity, preset_mode: speed });
     }
+  }
 
-    stopPropagation(e) {
-        e.stopPropagation();
-    }
-
-    setSpeed(e) {
-			const speed = e.currentTarget.getAttribute('name');
-			if( speed == 'off' ){
-				this.hass.callService('fan', 'turn_off', {entity_id: this._config.entity});
-			} else {
-				this.hass.callService('fan', 'set_speed', {entity_id: this._config.entity, speed: speed});
-			}
-    }
-
-		setMode(e) {
-			const mode = e.currentTarget.getAttribute('name');
-			this.hass.callService('dukaone','set_mode', {entity_id: this._config.entity, mode: mode});
-		}
+  setMode(e) {
+    const mode = e.currentTarget.getAttribute('name');
+    this.hass.callService('dukaone', 'set_mode', { entity_id: this._config.entity, mode: mode });
+  }
 }
 
 customElements.define('duka-control-entity-row', DukaCustomFanRow);
