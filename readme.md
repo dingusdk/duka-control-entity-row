@@ -1,3 +1,11 @@
+# Not working in newest HA
+
+NOTE - this does not work on the newer HA since Polymer was removed.
+I am not going to update for now since there are other alternatives woking fine with dukaone:
+
+[Fan Mode Button Row](https://github.com/finity69x2/fan-mode-button-row)
+
+
 # Custom duka one entity row for Home Assistant
 
 This is a Home Assistant custom entity row for the duka one heat exchanger.
