@@ -1,0 +1,14 @@
+homeassistant:
+  name: Home
+  unit_system: metric
+  time_zone: Europe/Copenhagen
+  debug: true
+
+default_config:
+
+logger:
+  default: info
+  logs:
+    custom_components.ha-dukaone: debug
+
+recorder:
