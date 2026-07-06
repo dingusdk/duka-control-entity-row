@@ -1,7 +1,13 @@
-# Not working in newest HA
+# Now updated to work with the latest Home Assistant 2026.7.1
 
-NOTE - this does not work on the newer HA since Polymer was removed.
-I am not going to update for now since there are other alternatives woking fine with dukaone:
+This is specific to the Dukaone and similar that are using this integration:
+
+[ha-duka-one](https://github.com/dingusdk/ha-dukaone)
+
+It will have "mode" buttons and speed buttons
+
+
+For a more generic one without the mode you can check out this one:
 
 [Fan Mode Button Row](https://github.com/finity69x2/fan-mode-button-row)
 
@@ -34,5 +40,3 @@ To insert the entity row in lovelace, you must choose "Show code editor" in the 
 ~~~
 ~~~
 
-I used the [Fan Control Entity Row](https://github.com/finity69x2/fan-control-entity-row) as a template for making this. I replaced the button text with images to make sure if remains the same size. And removed the custom text options and simplified the color options a bit.
-I am not going to make changes to this on request - only if it is something I want myself. So don't ask - but feel free to copy it and make your own changes, and if you make something great tell about it!
