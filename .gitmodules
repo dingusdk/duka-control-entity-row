@@ -1,0 +1,3 @@
+[submodule "ha-dukaone"]
+	path = ha-dukaone
+	url = https://github.com/dingusdk/ha-dukaone
