@@ -3,7 +3,7 @@
   "name": "DukaOneControl",
   "image": "mcr.microsoft.com/devcontainers/python:dev-3.14-bookworm",
   "workspaceFolder": "/workspaces/duka-control-entity-row",
-  "postCreateCommand": "scripts/setup",
+  "postCreateCommand": "script/setup",
   "forwardPorts": [
         8123
     ],
