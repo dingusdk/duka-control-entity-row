@@ -1,0 +1,49 @@
+// See https://aka.ms/vscode-remote/devcontainer.json for format details.
+{
+  "name": "DukaOneControl",
+  "image": "mcr.microsoft.com/devcontainers/python:dev-3.14-bookworm",
+  "workspaceFolder": "/workspaces/duka-control-entity-row",
+  "postCreateCommand": "scripts/setup",
+  "forwardPorts": [
+        8123
+    ],
+    "portsAttributes": {
+        "8123": {
+            "label": "Home Assistant",
+            "onAutoForward": "notify"
+        }
+    },
+    // Environment variables needed for Home Assistant
+    "containerEnv": {
+        "HA_DEV_PATH": "${containerWorkspaceFolder}",
+        /* Set the path to custom_components
+ This let's us have the structure we want <root>/custom_components/duka-control-entity-row
+ while at the same time have Home Assistant configuration inside <root>/config
+ without resulting to symlinks.    */
+        "PYTHONPATH": "${containerWorkspaceFolder}"
+    },
+  "runArgs": [
+    "--network=host"
+  ],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "files.eol": "\n",
+        "editor.tabSize": 2,
+        "editor.formatOnPaste": false,
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "files.trimTrailingWhitespace": true,
+        "yaml.customTags": [
+          "!secret scalar"
+        ]
+      }
+    },
+    "extensions": [
+      "ms-python.python",
+      "github.vscode-pull-request-github",
+      "ryanluker.vscode-coverage-gutters",
+      "ms-python.vscode-pylance"
+    ]
+  }
+}
